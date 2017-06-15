@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="selector-form">
     <h1>CSSpecify</h1>
     <input class="selector-input" type="text" v-model="selectorString"/>
     <div class="specificity-measure">
@@ -28,15 +28,19 @@
         </div>
       </div>
     </div>
-    <ul class="debug-bar">
-      <li v-for="token in tokens">{{token}}</li>
-    </ul>
+    <selector-visualisation
+      :depth="0"
+      :max-depth="10"
+      :selectorString="selectorString">
+    </selector-visualisation>
   </div>
 </template>
 
 <script>
+import SelectorVisualisation from './SelectorVisualisation';
+
 export default {
-  name: 'hello',
+  components: { SelectorVisualisation },
   data() {
     return {
       selectorString: 'ul#bacon.foo li.bar p #crispy',
@@ -81,21 +85,23 @@ h1 {
   font-size: 100px;
   margin: 20px 0 60px;
 }
+.selector-form {
+  width: 600px;
+  margin: 0 auto;
+}
 
 .selector-input {
   box-sizing: border-box;
   display: block;
-  margin: 0 auto 10px;
+  margin-bottom: 10px;
   height: 60px;
-  width: 600px;
+  width: 100%;
   font-size: 40px;
   font-weight: lighter;
   text-align: center;
 }
 
 .specificity-measure {
-  width: 600px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
 }
@@ -105,6 +111,7 @@ h1 {
   flex-grow: 1;
   padding: 10px;
   margin-left: 10px;
+  position: relative;
 }
 
 .specificity-measure__item:first-child {
